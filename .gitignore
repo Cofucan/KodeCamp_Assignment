@@ -5,3 +5,7 @@ __pycache__/qpm.cpython-310.pyc
 user_post.db
 requirements.txt
 .gitattributes
+__pycache__/sign_up.cpython-310.pyc
+test.py
+.gitignore
+__pycache__/upload_file.cpython-310.pyc

@@ -1,16 +1,26 @@
-from fastapi import FastAPI, Form, UploadFile
-from pydantic import BaseModel
+from fastapi import FastAPI, Form, UploadFile, status
+from fastapi.responses import JSONResponse
 from typing import Optional
 
 app = FastAPI()
 
+
 @app.post("/upload_file/")
-async def new_upload_file(file: Optional[UploadFile] = None):
+async def new_upload_file(username: str = Form(...), pin: int = Form(..., ge=1000, le=9999), file: Optional[UploadFile] = None):
     if not file:
-        # return {"error" : ValueError("no file")}      # Tried to raise an exception here but it dosen't print any error message
-        return {"status" : "no file uploaded"}
-    else:
-        return {"filename" : file.filename, "filetype" : file.content_type}
+        note = JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={"message": "no file uploaded"}
+            )
+        return {"username" : username,
+                "pin"      : pin,
+                "file"     : note.body,
+                "error"    : note.status_code}
+  
+    return {"username" : username,
+            "pin"      : pin,
+            "Filename" : file.filename, 
+            "filetype" : file.content_type}
 
 
 
@@ -18,5 +28,10 @@ async def new_upload_file(file: Optional[UploadFile] = None):
 
 
 
+      # return JSONResponse(
+        #         status_code=status.HTTP_404_NOT_FOUND,
+        #         content={"message": "no file uploaded"}
+        #     )
 
-
+        # raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no file was uploaded")
+        # return {"status" : "no file uploaded"}

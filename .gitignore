@@ -9,3 +9,9 @@ __pycache__/sign_up.cpython-310.pyc
 test.py
 .gitignore
 __pycache__/upload_file.cpython-310.pyc
+__.idea__
+.idea/fastapi_practice.iml
+.idea/modules.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/vcs.xml
+.idea/misc.xml

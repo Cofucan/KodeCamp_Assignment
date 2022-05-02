@@ -1,11 +1,15 @@
+from http.client import HTTPException
+from uuid import UUID
 from fastapi import FastAPI
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 
 app = FastAPI()
 
+db = {}
 
 class User(BaseModel):
+    id = UUID
     first_name: str = Field(..., max_length=50, min_length=3)
     middle_name: Optional[str] = Field(None, max_length=50, min_length=3)
     surname: str = Field(..., max_length=50, min_length=3)
@@ -23,3 +27,16 @@ async def create_account(sign_up: User):
     """Create user account."""
     return sign_up
 
+@app.post("/signup_test/")
+async def create_account(sign_up: User):
+    """Create user account."""
+    if sign_up.email in db.keys():
+        # return {"Sorry" : "This email is taken"}
+        raise HTTPException(status_code=404, description="Sorry, this email already exists in our database")
+    db[sign_up.email] = sign_up
+    return sign_up
+
+@app.get("/acounts/")
+async def get_all_accounts():
+    """Show all acounts in database."""
+    return db

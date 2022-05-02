@@ -7,6 +7,7 @@ app = FastAPI()
 
 db = {}
 
+
 class User(BaseModel):
     id = UUID
     first_name: str = Field(..., max_length=50, min_length=3)
@@ -20,6 +21,7 @@ class User(BaseModel):
     birth_date: int = Field(..., le=31)
     gender: str = Field(..., max_length=15, min_length=3)
 
+
 @app.post("/signup/")
 async def create_account(sign_up: User):
     """Create user account."""
@@ -28,7 +30,8 @@ async def create_account(sign_up: User):
     db[sign_up.email] = sign_up
     return sign_up
 
-@app.get("/acounts/")
+
+@app.get("/accounts/")
 async def get_all_accounts():
     """Show all accounts in database."""
     return db
